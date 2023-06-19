@@ -4,10 +4,10 @@ using System;
 namespace TDD_Unit
 {
     [TestClass]
-    public class UnitTest1
+    public class _SavingsAccountTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void nothing()
         {
         }
     }
