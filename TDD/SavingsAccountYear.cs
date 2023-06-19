@@ -6,9 +6,21 @@ using System.Threading.Tasks;
 
 namespace TDD
 {
-    public class SavingsAccount
+    public class SavingsAccountYear
     {
         private int balanceamount = 0;
+        private int v1;
+        private int v2;
+
+        public SavingsAccountYear(int startingBalance, int interestRate)
+        {
+            
+        }
+
+        public SavingsAccountYear() 
+        {
+        }
+
         public void deposit(int amount)
         {
             balanceamount += amount;
@@ -24,9 +36,9 @@ namespace TDD
             balanceamount -= amount;
         }
 
-        public SavingsAccount nextYear(int interestRate)
+        public SavingsAccountYear nextYear(int interestRate)
         {
-            SavingsAccount result = new  SavingsAccount();
+            SavingsAccountYear result = new  SavingsAccountYear();
             result.deposit(balance() + (balance() * interestRate / 100));
             return result;
         }

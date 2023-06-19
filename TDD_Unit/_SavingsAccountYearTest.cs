@@ -3,12 +3,12 @@ using TDD;
 namespace TDD_Unit
 {
     [TestClass]
-    public class _SavingsAccountTest
+    public class _SavingsAccountYearTest
     {
         [TestMethod]
         public void depositAndWithdarwal()
         {
-            SavingsAccount account = new SavingsAccount();
+            SavingsAccountYear account = new SavingsAccountYear();
             account.deposit(100);
             Assert.AreEqual(100, account.balance());
             account.Withdraw(50);
@@ -18,7 +18,7 @@ namespace TDD_Unit
         [TestMethod]
         public void NegativeBalanceIsjustFine()
         {
-            SavingsAccount account = new SavingsAccount();
+            SavingsAccountYear account = new SavingsAccountYear();
             account.Withdraw(75);
             Assert.AreEqual(-75, account.balance());
         }
@@ -26,10 +26,17 @@ namespace TDD_Unit
         [TestMethod]
         public void NextYear()
         {
-            SavingsAccount account = new SavingsAccount();
+            SavingsAccountYear account = new SavingsAccountYear();
             account.deposit(10000);
-            SavingsAccount  nextYear = account.nextYear(10);
+            SavingsAccountYear  nextYear = account.nextYear(10);
             Assert.AreEqual(11000, nextYear.balance());
+        }
+
+        [TestMethod]
+        public void endingBalance()
+        {
+            SavingsAccountYear account = new SavingsAccountYear(10000,10);
+            Assert.AreEqual(11000, account.endingBalance());
         }
     }
 }
