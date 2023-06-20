@@ -8,12 +8,20 @@ namespace TDD
 {
     public class SavingsAccountYear
     {
-        private int balanceamount = 0;
+        private int startingbalance = 0;
+        private int capitalGainsAmount = 0;
         private int interestRate = 0;
 
         public SavingsAccountYear(int startingBalance, int InterestRate)
         {
-            this.balanceamount = startingBalance;
+            this.startingbalance = startingBalance;
+            this.interestRate = InterestRate;
+        }
+
+        public SavingsAccountYear(int startingBalance,int CapitalGainsAmount, int InterestRate)
+        {
+            this.startingbalance = startingBalance;
+            this.capitalGainsAmount = CapitalGainsAmount;
             this.interestRate = InterestRate;
         }
 
@@ -21,24 +29,18 @@ namespace TDD
         {
         }
 
-        public void deposit(int amount)
+        public int StartingBalance()
         {
-            balanceamount += amount;
+            return startingbalance;
         }
 
-        public int startingBalance()
+        public int InterestRate()
         {
-            return balanceamount;
+            return interestRate;
         }
-
-        public int balance()
+        public int endingBalance()
         {
-            return balanceamount;
-        }
-
-        public void Withdraw(int amount)
-        {
-            balanceamount -= amount;
+            return startingbalance + (startingbalance * interestRate / 100);
         }
 
         public SavingsAccountYear nextYear()
@@ -46,14 +48,9 @@ namespace TDD
             return new  SavingsAccountYear(this.endingBalance(), interestRate);
         }
 
-        public int endingBalance()
+        public void Withdraw(int amount)
         {
-            return balance() + (balance() * interestRate / 100);
-        }
-
-        public int InterestRate()
-        {
-            return interestRate;
+            startingbalance -= amount;
         }
     }
 }
