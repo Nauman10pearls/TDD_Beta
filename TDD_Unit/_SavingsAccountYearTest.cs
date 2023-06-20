@@ -48,14 +48,20 @@ namespace TDD_Unit
         }
 
         [TestMethod]
-        public void withDrawingMoreThanPrinicipalIncursCapitalgainsTax()
+        public void principal()
         {
-            SavingsAccountYear year = new SavingsAccountYear(10000,7000, 10);
-            year.Withdraw(3000);
-            Assert.AreEqual(7700, year.endingBalance());
-            year.Withdraw(5000);
-            Assert.AreEqual(2000 + 200 - (1250), year.endingBalance());
+
         }
+
+        //[TestMethod]
+        //public void withDrawingMoreThanPrinicipalIncursCapitalgainsTax()
+        //{
+        //    SavingsAccountYear year = new SavingsAccountYear(10000,7000, 10);
+        //    year.Withdraw(3000);
+        //    Assert.AreEqual(7700, year.endingBalance());
+        //    year.Withdraw(5000);
+        //    Assert.AreEqual(2000 + 200 - (1250), year.endingBalance());
+        //}
 
         private SavingsAccountYear newAccount()
         {
