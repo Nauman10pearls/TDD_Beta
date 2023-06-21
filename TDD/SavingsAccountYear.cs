@@ -9,6 +9,7 @@ namespace TDD
     public class SavingsAccountYear
     {
         private int startingbalance = 0;
+        private int startingPrincipal = 0;
         private int capitalGainsAmount = 0;
         private int interestRate = 0;
         private int totalWithdrawn = 0;
@@ -19,10 +20,11 @@ namespace TDD
             this.interestRate = InterestRate;
         }
 
-        public SavingsAccountYear(int startingBalance,int CapitalGainsAmount, int InterestRate)
+        public SavingsAccountYear(int startingBalance,int Startingprincipal, int InterestRate)
         {
             this.startingbalance = startingBalance;
-            this.capitalGainsAmount = CapitalGainsAmount;
+            this.startingPrincipal = Startingprincipal;
+            this.capitalGainsAmount = startingbalance - Startingprincipal;
             this.interestRate = InterestRate;
         }
 
@@ -43,27 +45,43 @@ namespace TDD
             return interestRate;
         }
 
+        public int TotalWithDrawn()
+        {
+            return totalWithdrawn;
+        }
+
         public int EndingPrincipal()
         {
-            int result =  StartingPrinicipal() - totalWithdrawn ;
-            return (result < 0) ? 0 : result;
+            int result =  StartingPrinicipal() - TotalWithDrawn();
+            return Math.Max(0, result);
         }
-        public int endingBalance()
+        public int endingBalance(int capitalGainsTaxRate)
         {
-            int modifiedStart = startingbalance - totalWithdrawn;
+            int modifiedStart = startingbalance - TotalWithDrawn() - capitalGainstaxIncurred(capitalGainsTaxRate);
             return modifiedStart + (modifiedStart * interestRate / 100);
         }
 
-        public SavingsAccountYear nextYear()
+        public SavingsAccountYear nextYear(int capitalGainsTaxRate)
         {
-            return new  SavingsAccountYear(this.endingBalance(), interestRate);
+            return new  SavingsAccountYear(this.endingBalance(capitalGainsTaxRate), interestRate);
         }
+
+        
 
         public void Withdraw(int amount)
         {
             this.totalWithdrawn += amount;
         }
 
-        
+        public int CapitalGainsWithdrawn()
+        {
+            int result =  -1 * (StartingPrinicipal() - TotalWithDrawn());
+            return Math.Max(0,result);
+        }
+
+        public int capitalGainstaxIncurred(int taxRate)
+        {
+            return CapitalGainsWithdrawn() * taxRate / 100;
+        }
     }
 }

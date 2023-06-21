@@ -21,7 +21,7 @@ namespace TDD_Unit
         [TestMethod]
         public void endingBalanceAppliesInterestRate()
         {
-            Assert.AreEqual(11000, newAccount().endingBalance());
+            Assert.AreEqual(11000, newAccount().endingBalance(25));
         }
 
 
@@ -29,14 +29,14 @@ namespace TDD_Unit
         public void NextYearsStartingBalanceEqualsThisYearEndingBalance()
         {
             SavingsAccountYear thisYear = newAccount();
-            Assert.AreEqual(thisYear.endingBalance(), thisYear.nextYear().StartingBalance());
+            Assert.AreEqual(thisYear.endingBalance(25), thisYear.nextYear(25).StartingBalance());
         }
 
         [TestMethod]
         public void NextYearsInterestRateEqualsThisYearsInterestRate()
         {
             SavingsAccountYear thisYear = newAccount();
-            Assert.AreEqual(thisYear.InterestRate(), thisYear.nextYear().InterestRate());
+            Assert.AreEqual(thisYear.InterestRate(), thisYear.nextYear(25).InterestRate());
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace TDD_Unit
         {
             SavingsAccountYear year = new SavingsAccountYear(10000, 10);
             year.Withdraw(1000);
-            Assert.AreEqual(9900,year.endingBalance());
+            Assert.AreEqual(9900,year.endingBalance(25));
         }
 
         [TestMethod]
@@ -53,20 +53,19 @@ namespace TDD_Unit
             SavingsAccountYear year = new SavingsAccountYear(10000, 10);
             year.Withdraw(1000);
             year.Withdraw(2000);
-            Assert.AreEqual(7700, year.endingBalance());
+            Assert.AreEqual(3000, year.TotalWithDrawn());
         }
 
         [TestMethod]
         public void Startingprincipal()
         {
-            SavingsAccountYear year = new SavingsAccountYear(10000, 7000, 10);
+            SavingsAccountYear year = new SavingsAccountYear(10000, 3000, 10);
             Assert.AreEqual(3000,year.StartingPrinicipal());
         }
         [TestMethod]
         public void EndingPrincipal()
         {
-            SavingsAccountYear year = new SavingsAccountYear(10000, 7000, 10);
-            Assert.AreEqual(3000, year.StartingPrinicipal());
+            SavingsAccountYear year = new SavingsAccountYear(10000, 3000, 10);
             year.Withdraw(2000);
             Assert.AreEqual(1000, year.EndingPrincipal());
         }
@@ -74,18 +73,44 @@ namespace TDD_Unit
         [TestMethod]
         public void EndingPrinicipalNeverGoesBelowZero()
         {
-            SavingsAccountYear year = new SavingsAccountYear(10000, 7000, 10);
-            Assert.AreEqual(3000, year.StartingPrinicipal());
+            SavingsAccountYear year = new SavingsAccountYear(10000, 3000, 10);
             year.Withdraw(4000);
             Assert.AreEqual(0, year.EndingPrincipal());
         }
 
-        
+        [TestMethod]
+        public void CapitalGainsWithDrawn()
+        {
+            SavingsAccountYear year = new SavingsAccountYear(10000, 3000, 10);
+            year.Withdraw(1000);
+            Assert.AreEqual(0, year.CapitalGainsWithdrawn());
+            year.Withdraw(3000);
+            Assert.AreEqual(1000,year.CapitalGainsWithdrawn());
+        }
+
+        [TestMethod]
+        public void CapitalGainsTaxIncurred()
+        {
+            SavingsAccountYear year = new SavingsAccountYear(10000, 3000, 10);
+            year.Withdraw(5000);
+            Assert.AreEqual(2000,year.CapitalGainsWithdrawn());
+            Assert.AreEqual(500, year.capitalGainstaxIncurred(25));
+        }
+
+        [TestMethod]
+        public void CapitalGainsTaxIsIncludedInEndingBalance()
+        {
+            SavingsAccountYear year = new SavingsAccountYear(10000, 3000, 10);
+            year.Withdraw(5000);
+            Assert.AreEqual(2000, year.CapitalGainsWithdrawn());
+            Assert.AreEqual(500, year.capitalGainstaxIncurred(25));
+            Assert.AreEqual(10000 - 5000 -500 + 450, year.endingBalance(25));
+        }
 
         //[TestMethod]
         //public void withDrawingMoreThanPrinicipalIncursCapitalgainsTax()
         //{
-        //    SavingsAccountYear year = new SavingsAccountYear(10000,7000, 10);
+        //    SavingsAccountYear year = new SavingsAccountYear(10000,3000, 10);
         //    year.Withdraw(3000);
         //    Assert.AreEqual(7700, year.endingBalance());
         //    year.Withdraw(5000);
