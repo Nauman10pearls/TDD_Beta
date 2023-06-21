@@ -11,6 +11,7 @@ namespace TDD
         private int startingbalance = 0;
         private int capitalGainsAmount = 0;
         private int interestRate = 0;
+        private int totalWithdrawn = 0;
 
         public SavingsAccountYear(int startingBalance, int InterestRate)
         {
@@ -33,14 +34,24 @@ namespace TDD
         {
             return startingbalance;
         }
-
+        public int StartingPrinicipal()
+        {
+            return startingbalance - capitalGainsAmount;
+        }
         public int InterestRate()
         {
             return interestRate;
         }
+
+        public int EndingPrincipal()
+        {
+            int result =  StartingPrinicipal() - totalWithdrawn ;
+            return (result < 0) ? 0 : result;
+        }
         public int endingBalance()
         {
-            return startingbalance + (startingbalance * interestRate / 100);
+            int modifiedStart = startingbalance - totalWithdrawn;
+            return modifiedStart + (modifiedStart * interestRate / 100);
         }
 
         public SavingsAccountYear nextYear()
@@ -50,7 +61,9 @@ namespace TDD
 
         public void Withdraw(int amount)
         {
-            startingbalance -= amount;
+            this.totalWithdrawn += amount;
         }
+
+        
     }
 }
