@@ -94,7 +94,7 @@ namespace TDD_Unit
             SavingsAccountYear year = new SavingsAccountYear(10000, 0, 10);
             year.Withdraw(1000);
             Assert.AreEqual(333, year.capitalGainstaxIncurred(25));
-            Assert.AreEqual(1333,year.TotalWithDrawnIncludingCapitalGainsWithDrawn(25));
+            Assert.AreEqual(1333,year.TotalWithDrawn(25));
         }
 
         
