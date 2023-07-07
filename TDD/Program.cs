@@ -1,3 +1,3 @@
 ﻿using TDD;
 
-SavingsAccountYear account = new SavingsAccountYear(1000,10);
+SavingsAccountYear account = new SavingsAccountYear(1000,1000,10);

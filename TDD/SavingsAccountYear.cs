@@ -10,21 +10,14 @@ namespace TDD
     {
         private int startingbalance = 0;
         private int startingPrincipal = 0;
-        private int capitalGainsAmount = 0;
         private int interestRate = 0;
         private int totalWithdrawn = 0;
 
-        public SavingsAccountYear(int startingBalance, int InterestRate)
-        {
-            this.startingbalance = startingBalance;
-            this.interestRate = InterestRate;
-        }
 
         public SavingsAccountYear(int startingBalance,int Startingprincipal, int InterestRate)
         {
             this.startingbalance = startingBalance;
             this.startingPrincipal = Startingprincipal;
-            this.capitalGainsAmount = startingbalance - Startingprincipal;
             this.interestRate = InterestRate;
         }
 
@@ -38,11 +31,25 @@ namespace TDD
         }
         public int StartingPrinicipal()
         {
-            return startingbalance - capitalGainsAmount;
+            return startingPrincipal;
+        }
+        public int StartingCapitalGains()
+        {
+            return startingbalance - startingPrincipal;
         }
         public int InterestRate()
         {
             return interestRate;
+        }
+
+        public int InterestEarned(int capitalGainsTaxRate)
+        {
+            return (startingbalance - TotalWithDrawn() - capitalGainstaxIncurred(capitalGainsTaxRate)) * interestRate /100;
+        }
+
+        public int TotalWithdrawnExceptCapitalGainsTax()
+        {
+            return totalWithdrawn;
         }
 
         public int TotalWithDrawn()
@@ -55,19 +62,20 @@ namespace TDD
             int result =  StartingPrinicipal() - TotalWithDrawn();
             return Math.Max(0, result);
         }
+        public int EndingCapitalGains()
+        {
+            return 0;
+        }
         public int endingBalance(int capitalGainsTaxRate)
         {
             int modifiedStart = startingbalance - TotalWithDrawn() - capitalGainstaxIncurred(capitalGainsTaxRate);
-            return modifiedStart + (modifiedStart * interestRate / 100);
+            return modifiedStart + InterestEarned(capitalGainsTaxRate);
         }
 
         public SavingsAccountYear nextYear(int capitalGainsTaxRate)
         {
-            return new  SavingsAccountYear(this.endingBalance(capitalGainsTaxRate), interestRate);
+            return new  SavingsAccountYear(this.endingBalance(capitalGainsTaxRate),0, interestRate);
         }
-
-        
-
         public void Withdraw(int amount)
         {
             this.totalWithdrawn += amount;
@@ -81,7 +89,14 @@ namespace TDD
 
         public int capitalGainstaxIncurred(int taxRate)
         {
-            return CapitalGainsWithdrawn() * taxRate / 100;
+            double dblTaxRate = taxRate / 100.0;
+            double dblCapGains = CapitalGainsWithdrawn();
+            return (int)((dblCapGains / (1 - dblTaxRate)) - dblCapGains);
+        }
+
+        public int TotalWithDrawn(int capitalGainsTax)
+        {
+            return TotalWithDrawn() + capitalGainstaxIncurred(capitalGainsTax);
         }
     }
 }
